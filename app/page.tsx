@@ -1,63 +1,91 @@
-import Image from "next/image";
+import Link from 'next/link';
+import { getAllCPUModels } from '@/app/lib/cpu-data';
+import Navigation from '@/app/components/Navigation';
+import { Cpu, ArrowRight } from 'lucide-react';
 
-export default function Home() {
+export default function HomePage() {
+  const models = getAllCPUModels();
+  console.log('====================================');
+  console.log(models);
+  console.log('====================================');
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900">
+      <Navigation />
+
+      <main className="max-w-7xl mx-auto px-4 py-12">
+        {/* Hero Section */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mb-6">
+            <Cpu className="w-10 h-10 text-white" />
+          </div>
+          <h1 className="text-5xl font-bold text-white mb-4">
+            Explore CPU Components in AR
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+            View detailed 3D models of CPU components on your desktop, or place
+            them in your real environment using augmented reality on mobile
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        {/* Models Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {models.map((model) => (
+            <Link
+              key={model.id}
+              href={`/cpu/${model.id}`}
+              className="group bg-black/30 backdrop-blur rounded-xl border border-blue-500/30 overflow-hidden hover:border-blue-400 transition-all hover:scale-105"
+            >
+              <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                <Cpu className="w-20 h-20 text-blue-400 group-hover:text-blue-300 transition" />
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-white mb-2">
+                  {model.name}
+                </h3>
+                <p className="text-gray-400 text-sm mb-4">
+                  {model.manufacturer}
+                </p>
+                <p className="text-gray-300 text-sm mb-4">
+                  {model.description}
+                </p>
+                <div className="flex items-center justify-between">
+                  <span className="text-blue-400 text-sm font-semibold">
+                    {model.parts.length} Components
+                  </span>
+                  <ArrowRight className="w-5 h-5 text-blue-400 group-hover:translate-x-1 transition" />
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        {/* Features */}
+        <div className="mt-16 grid md:grid-cols-3 gap-6">
+          <div className="bg-black/30 backdrop-blur rounded-xl border border-blue-500/30 p-6 text-center">
+            <div className="text-4xl mb-3">🖥️</div>
+            <h3 className="text-lg font-bold text-white mb-2">
+              Desktop Viewer
+            </h3>
+            <p className="text-gray-400 text-sm">
+              Rotate, zoom, and inspect 3D models with mouse controls
+            </p>
+          </div>
+          <div className="bg-black/30 backdrop-blur rounded-xl border border-blue-500/30 p-6 text-center">
+            <div className="text-4xl mb-3">📱</div>
+            <h3 className="text-lg font-bold text-white mb-2">Mobile AR</h3>
+            <p className="text-gray-400 text-sm">
+              Place models in your real environment using your phone's camera
+            </p>
+          </div>
+          <div className="bg-black/30 backdrop-blur rounded-xl border border-blue-500/30 p-6 text-center">
+            <div className="text-4xl mb-3">🏷️</div>
+            <h3 className="text-lg font-bold text-white mb-2">
+              Interactive Labels
+            </h3>
+            <p className="text-gray-400 text-sm">
+              Learn about each component with detailed descriptions
+            </p>
+          </div>
         </div>
       </main>
     </div>
