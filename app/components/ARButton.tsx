@@ -22,44 +22,68 @@ export default function ARButton({ modelPath }: Props) {
 
   const handleARClick = () => {
     const fullModelUrl = `${currentUrl}${modelPath}`;
-    
+
     if (isIOS) {
       // iOS Quick Look AR
+      // const link = document.createElement('a');
+      // link.rel = 'ar';
+      // link.href = modelPath;
+      // link.download = '';
+
+      // const img = document.createElement('img');
+      // link.appendChild(img);
+
+      // document.body.appendChild(link);
+      // link.click();
+      // document.body.removeChild(link);
+
+      // console.log('iOS AR triggered with:', modelPath);
+      const usdzPath = modelPath.replace('.glb', '.usdz');
+
       const link = document.createElement('a');
       link.rel = 'ar';
-      link.href = modelPath;
-      link.download = '';
-      
+      link.href = usdzPath;
+
       const img = document.createElement('img');
       link.appendChild(img);
-      
+
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      
-      console.log('iOS AR triggered with:', modelPath);
+
+      console.log('iOS AR triggered with:', usdzPath);
     } else if (isAndroid) {
       // Android Scene Viewer
-      const intentUrl = `intent://arvr.google.com/scene-viewer/1.0?file=${encodeURIComponent(fullModelUrl)}&mode=ar_preferred&title=CPU%20Model#Intent;scheme=https;package=com.google.android.googlequicksearchbox;action=android.intent.action.VIEW;S.browser_fallback_url=${encodeURIComponent(window.location.href)};end;`;
-      
+      const intentUrl = `intent://arvr.google.com/scene-viewer/1.0?file=${encodeURIComponent(
+        fullModelUrl
+      )}&mode=ar_preferred&title=CPU%20Model#Intent;scheme=https;package=com.google.android.googlequicksearchbox;action=android.intent.action.VIEW;S.browser_fallback_url=${encodeURIComponent(
+        window.location.href
+      )};end;`;
+
       window.location.href = intentUrl;
-      
+
       console.log('Android AR triggered with:', intentUrl);
-      
+
       // Fallback: Try Scene Viewer directly after 2 seconds
       setTimeout(() => {
-        const sceneViewerUrl = `https://arvr.google.com/scene-viewer/1.0?file=${encodeURIComponent(fullModelUrl)}&mode=ar_preferred`;
+        const sceneViewerUrl = `https://arvr.google.com/scene-viewer/1.0?file=${encodeURIComponent(
+          fullModelUrl
+        )}&mode=ar_preferred`;
         window.open(sceneViewerUrl, '_blank');
       }, 2000);
     } else {
       // Desktop fallback - show instructions
-      alert(`AR is available on mobile devices.\n\nTo view in AR:\n1. Open this page on your smartphone\n2. Tap the "Open in AR" button\n3. Point your camera at a flat surface\n\nCurrent URL: ${window.location.href}`);
+      alert(
+        `AR is available on mobile devices.\n\nTo view in AR:\n1. Open this page on your smartphone\n2. Tap the "Open in AR" button\n3. Point your camera at a flat surface\n\nCurrent URL: ${window.location.href}`
+      );
     }
   };
 
   const handleModelViewerAR = () => {
     // Alternative: Use model-viewer's AR capabilities
-    const modelViewerUrl = `https://modelviewer.dev/editor/?gltfUrl=${encodeURIComponent(currentUrl + modelPath)}`;
+    const modelViewerUrl = `https://modelviewer.dev/editor/?gltfUrl=${encodeURIComponent(
+      currentUrl + modelPath
+    )}`;
     window.open(modelViewerUrl, '_blank');
   };
 
@@ -94,7 +118,10 @@ export default function ARButton({ modelPath }: Props) {
               <p className="font-semibold text-blue-400 mb-1">
                 {isIOS ? 'iOS Quick Look' : 'Android Scene Viewer'}
               </p>
-              <p>Tap the button above to place this model in your space. Point your camera at a flat surface to begin.</p>
+              <p>
+                Tap the button above to place this model in your space. Point
+                your camera at a flat surface to begin.
+              </p>
             </div>
           </div>
         ) : (
@@ -102,7 +129,10 @@ export default function ARButton({ modelPath }: Props) {
             <AlertCircle className="w-4 h-4 text-yellow-400 flex-shrink-0 mt-0.5" />
             <div>
               <p className="font-semibold text-yellow-400 mb-1">Desktop Mode</p>
-              <p>AR features work best on mobile devices. Scan the QR code below or open this page on your phone.</p>
+              <p>
+                AR features work best on mobile devices. Scan the QR code below
+                or open this page on your phone.
+              </p>
             </div>
           </div>
         )}
@@ -111,31 +141,43 @@ export default function ARButton({ modelPath }: Props) {
       {/* QR Code for Desktop */}
       {!isMobile && currentUrl && (
         <div className="bg-black/30 rounded-lg p-4">
-          <p className="text-xs text-gray-400 mb-3 text-center">Scan to open on mobile:</p>
+          <p className="text-xs text-gray-400 mb-3 text-center">
+            Scan to open on mobile:
+          </p>
           <div className="flex justify-center mb-3">
             <div className="bg-white p-3 rounded-lg">
               <div className="w-40 h-40 bg-white relative">
-                <img 
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : currentUrl)}`}
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
+                    typeof window !== 'undefined'
+                      ? window.location.href
+                      : currentUrl
+                  )}`}
                   alt="QR Code"
                   className="w-full h-full"
                   onError={(e) => {
                     // Fallback to Google Charts API
                     const target = e.target as HTMLImageElement;
-                    target.src = `https://chart.googleapis.com/chart?cht=qr&chl=${encodeURIComponent(window.location.href)}&chs=300x300`;
+                    target.src = `https://chart.googleapis.com/chart?cht=qr&chl=${encodeURIComponent(
+                      window.location.href
+                    )}&chs=300x300`;
                   }}
                 />
               </div>
             </div>
           </div>
-          
+
           {/* Manual URL */}
           <div className="mt-3">
             <p className="text-xs text-gray-400 mb-2">Or copy this URL:</p>
             <div className="flex gap-2">
-              <input 
-                type="text" 
-                value={typeof window !== 'undefined' ? window.location.href : currentUrl}
+              <input
+                type="text"
+                value={
+                  typeof window !== 'undefined'
+                    ? window.location.href
+                    : currentUrl
+                }
                 readOnly
                 className="flex-1 px-3 py-2 bg-gray-900 text-gray-300 text-xs rounded border border-gray-700 font-mono"
               />
