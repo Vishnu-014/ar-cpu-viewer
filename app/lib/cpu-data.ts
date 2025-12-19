@@ -8,7 +8,7 @@ export const cpuModels: CPUModel[] = [
     description:
       'High-performance CPU cooling solution with heat pipes and fan',
     fullModelPath: '/models/cpu_cooler.glb',
-    thumbnail: '/images/cpu-cooler.jpg',
+    thumbnail: '/thumbnail/cooler.png',
     parts: [],
   },
   {
@@ -16,17 +16,17 @@ export const cpuModels: CPUModel[] = [
     name: 'Motherboard',
     manufacturer: 'Generic',
     description: 'motherboard',
-    fullModelPath: '/models/motherboard_components.glb',
-    thumbnail: '/images/cpu-cooler.jpg',
+    fullModelPath: '/models/motherboard.glb',
+    thumbnail: '/thumbnail/motherboard.png',
     parts: [],
   },
   {
     id: 'RetroPC.fbx',
-    name: 'RetroPC.fbx',
+    name: 'Retro PC',
     manufacturer: 'Generic',
-    description: 'RetroPC.fbx',
+    description: 'Retro PC',
     fullModelPath: '/models/RetroPC.glb',
-    thumbnail: '/images/cpu-cooler.jpg',
+    thumbnail: '/thumbnail/retro.png',
     parts: [],
   },
 ];

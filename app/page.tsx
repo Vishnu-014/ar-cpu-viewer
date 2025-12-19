@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { getAllCPUModels } from '@/app/lib/cpu-data';
 import Navigation from '@/app/components/Navigation';
 import { Cpu, ArrowRight } from 'lucide-react';
+import Image from 'next/image';
 
 export default function HomePage() {
   const models = getAllCPUModels();
@@ -35,8 +36,13 @@ export default function HomePage() {
               href={`/cpu/${model.id}`}
               className="group bg-black/30 backdrop-blur rounded-xl border border-blue-500/30 overflow-hidden hover:border-blue-400 transition-all hover:scale-105"
             >
-              <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
-                <Cpu className="w-20 h-20 text-blue-400 group-hover:text-blue-300 transition" />
+              <div className="aspect-video bg-linear-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                <Image
+                  src={model.thumbnail}
+                  alt={model.name}
+                  width={300}
+                  height={300}
+                />
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-bold text-white mb-2">
