@@ -7,40 +7,28 @@ export const cpuModels: CPUModel[] = [
     manufacturer: 'Generic',
     description:
       'High-performance CPU cooling solution with heat pipes and fan',
-    fullModelPath: '/models/cpu_cooler.glb', // 👈 YOUR MODEL PATH HERE
+    fullModelPath: '/models/cpu_cooler.glb',
     thumbnail: '/images/cpu-cooler.jpg',
-    parts: [
-      {
-        id: 'fan',
-        name: 'Cooling Fan',
-        description: 'High-speed fan that pushes air through the heatsink fins',
-        position: { x: 0, y: 1, z: 0 },
-        color: '#333333',
-      },
-      {
-        id: 'heatsink',
-        name: 'Heatsink Fins',
-        description: 'Aluminum fins that dissipate heat into the air',
-        position: { x: 0, y: 0.5, z: 0 },
-        color: '#c0c0c0',
-      },
-      {
-        id: 'heatpipes',
-        name: 'Heat Pipes',
-        description: 'Copper tubes that transfer heat from base to fins',
-        position: { x: 0, y: 0, z: 0 },
-        color: '#b87333',
-      },
-      {
-        id: 'base',
-        name: 'Contact Base',
-        description: 'Copper base plate that makes contact with CPU',
-        position: { x: 0, y: -0.5, z: 0 },
-        color: '#b87333',
-      },
-    ],
+    parts: [],
   },
-  // You can add more models here later
+  {
+    id: 'motherboard',
+    name: 'Motherboard',
+    manufacturer: 'Generic',
+    description: 'motherboard',
+    fullModelPath: '/models/motherboard_components.glb',
+    thumbnail: '/images/cpu-cooler.jpg',
+    parts: [],
+  },
+  {
+    id: 'RetroPC.fbx',
+    name: 'RetroPC.fbx',
+    manufacturer: 'Generic',
+    description: 'RetroPC.fbx',
+    fullModelPath: '/models/RetroPC.glb',
+    thumbnail: '/images/cpu-cooler.jpg',
+    parts: [],
+  },
 ];
 
 export function getCPUModel(id: string): CPUModel | undefined {
