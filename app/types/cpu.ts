@@ -16,4 +16,6 @@ export interface CPUModel {
   parts: CPUPart[];
   fullModelPath: string;
   thumbnail: string;
+  exploreImage: string;
+  exploreVideo?: string; // ✅ ADDED FOR VIDEO
 }

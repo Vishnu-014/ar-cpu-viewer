@@ -17,7 +17,7 @@ export default async function CPUDetailPage({
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900">
       <Navigation />
-      <CPUViewerClient cpu={cpu} />
+      <CPUViewerClient cpu={cpu} cpuId={cpu.id} />
     </div>
   );
 }

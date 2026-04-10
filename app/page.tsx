@@ -19,7 +19,7 @@ export default function HomePage() {
             <Cpu className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-5xl font-bold text-white mb-4">
-            Explore CPU Components in AR
+            Explore PC Components in AR
           </h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
             View detailed 3D models of CPU components on your desktop, or place
@@ -36,7 +36,10 @@ export default function HomePage() {
               className="group bg-black/30 backdrop-blur rounded-xl border border-blue-500/30 overflow-hidden hover:border-blue-400 transition-all hover:scale-105"
             >
               <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
-                <Cpu className="w-20 h-20 text-blue-400 group-hover:text-blue-300 transition" />
+                <img 
+                  src={model.thumbnail}
+                  alt=''
+                />
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-bold text-white mb-2">

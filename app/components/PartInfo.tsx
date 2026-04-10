@@ -1,82 +1,150 @@
 'use client';
 
+import { useState } from 'react';
 import { CPUPart } from '@/app/types/cpu';
-import { Tag, Info } from 'lucide-react';
+import { Tag, Info, X, Video } from 'lucide-react';
 
 interface Props {
   parts: CPUPart[];
   selectedPart: CPUPart | null;
   onSelectPart: (part: CPUPart) => void;
+  cpuId: string;
+  cpu: any;
 }
 
-export default function PartInfo({ parts, selectedPart, onSelectPart }: Props) {
+export default function PartInfo({
+  parts,
+  selectedPart,
+  onSelectPart,
+  cpuId,
+  cpu
+}: Props) {
+
+  const [showImage, setShowImage] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+
+  /* ✅ OPEN IMAGE */
+  const openImage = () => {
+    setImageSrc(cpu.exploreImage);
+    setShowImage(true);
+  };
+
+  /* ✅ OPEN VIDEO */
+  const openVideo = () => {
+    setShowVideo(true);
+  };
+
   return (
     <div className="space-y-4">
-      {/* Selected Part Detail */}
-      {selectedPart ? (
-        <div className="bg-gradient-to-br from-blue-900/40 to-purple-900/40 backdrop-blur rounded-xl border border-blue-500/30 p-6">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-3 bg-blue-500/20 rounded-lg">
-              <Tag className="w-6 h-6 text-blue-400" />
-            </div>
-            <h2 className="text-xl font-bold text-white">
-              {selectedPart.name}
-            </h2>
-          </div>
-          <p className="text-gray-300 leading-relaxed">
-            {selectedPart.description}
-          </p>
-          <div className="mt-4 pt-4 border-t border-blue-500/30">
-            <div className="flex items-center gap-2 text-sm text-gray-400">
-              <div
-                className="w-4 h-4 rounded border border-white/30"
-                style={{ backgroundColor: selectedPart.color }}
-              />
-              <span>Color identifier</span>
-            </div>
+
+      {/* 🔹 EXPLORE BUTTONS */}
+      {!selectedPart && (
+        <div className="space-y-2">
+          <button
+            onClick={openImage}
+            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+          >
+            Explore CPU Model
+          </button>
+
+          {/* ✅ NEW VIDEO BUTTON */}
+          <button
+            onClick={openVideo}
+            className="w-full bg-purple-600 text-white py-2 rounded hover:bg-purple-700 transition flex items-center justify-center gap-2"
+          >
+            <Video size={18} /> Explore CPU Video
+          </button>
+        </div>
+      )}
+
+      {/* 🔹 IMAGE MODAL */}
+      {showImage && imageSrc && (
+        <div
+          className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center"
+          onClick={() => setShowImage(false)}
+        >
+          <div
+            className="relative bg-black p-4 rounded-xl max-w-2xl w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setShowImage(false)}
+              className="absolute top-3 right-3 text-white"
+            >
+              <X />
+            </button>
+
+            <img
+              src={imageSrc}
+              className="w-full rounded-lg object-contain"
+              alt="CPU Model"
+            />
           </div>
         </div>
-      ) : (
-        <div className="bg-blue-900/20 backdrop-blur rounded-xl border border-blue-500/30 p-6 text-center">
-          <div className="w-12 h-12 bg-blue-400/20 rounded-lg mx-auto mb-3 flex items-center justify-center">
-            <Info className="w-6 h-6 text-blue-400" />
+      )}
+
+      {/* 🔹 VIDEO MODAL */}
+      {showVideo && (
+        <div
+          className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center"
+          onClick={() => setShowVideo(false)}
+        >
+          <div
+            className="relative bg-black p-4 rounded-xl max-w-3xl w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setShowVideo(false)}
+              className="absolute top-3 right-3 text-white"
+            >
+              <X />
+            </button>
+
+            <video
+              src={cpu.exploreVideo}
+              controls
+              autoPlay
+              className="w-full rounded-lg"
+            />
           </div>
-          <p className="text-gray-400">
-            Click on the model or select a part below
+        </div>
+      )}
+
+      {/* 🔹 SELECTED PART INFO */}
+      {selectedPart ? (
+        <div className="bg-blue-900/30 p-6 rounded-xl border border-blue-500/30">
+          <h2 className="text-xl font-bold text-white mb-2">
+            {selectedPart.name}
+          </h2>
+          <p className="text-gray-300">{selectedPart.description}</p>
+        </div>
+      ) : (
+        <div className="bg-blue-900/20 p-6 rounded-xl text-center">
+          <Info className="mx-auto text-blue-400" />
+          <p className="text-gray-400 mt-2">
+            Select a component to view details
           </p>
         </div>
       )}
 
-      {/* Parts List */}
-      <div className="bg-black/30 backdrop-blur rounded-xl border border-blue-500/30 p-6">
-        <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-white">
-          <Tag className="w-5 h-5 text-blue-400" />
-          Components
+      {/* 🔹 COMPONENT LIST */}
+      <div className="bg-black/30 p-6 rounded-xl border border-blue-500/30">
+        <h3 className="text-white font-bold mb-3 flex gap-2">
+          <Tag className="text-blue-400" /> Components
         </h3>
-        <div className="space-y-2">
-          {parts.map((part) => (
-            <button
-              key={part.id}
-              onClick={() => onSelectPart(part)}
-              className={`w-full text-left p-3 rounded-lg transition ${
-                selectedPart?.id === part.id
-                  ? 'bg-blue-600/50 border border-blue-400'
-                  : 'bg-gray-800/50 hover:bg-gray-700/50 border border-transparent'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <div
-                  className="w-3 h-3 rounded-full border border-white/30 flex-shrink-0"
-                  style={{ backgroundColor: part.color }}
-                />
-                <span className="text-sm font-medium text-white">
-                  {part.name}
-                </span>
-              </div>
-            </button>
-          ))}
-        </div>
+
+        {parts.map((part) => (
+          <button
+            key={part.id}
+            onClick={() => onSelectPart(part)}
+            className="w-full text-left p-3 mb-2 rounded bg-gray-800/60 hover:bg-gray-700 transition"
+          >
+            <span className="text-white">{part.name}</span>
+          </button>
+        ))}
       </div>
+
     </div>
   );
 }
